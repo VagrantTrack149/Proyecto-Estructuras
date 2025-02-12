@@ -6,7 +6,7 @@ public class AnchorPoint : MonoBehaviour
 
     void OnMouseDown()
     {
-        isDragging = false;
+        isDragging = true;
     }
 
     void OnMouseUp()

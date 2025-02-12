@@ -205,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -0.45, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -330,8 +330,8 @@ Transform:
   m_GameObject: {fileID: 1052123068}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -3.57, z: 0}
-  m_LocalScale: {x: 17.405245, y: 2.6942, z: 1}
+  m_LocalPosition: {x: -0.01, y: -4.12, z: 0}
+  m_LocalScale: {x: 16.864382, y: 2.6942, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -344,6 +344,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5360542853576715909, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5768598847128683751, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_Name
       value: AnchorPoint (1)
@@ -354,11 +358,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.12
+      value: -2.58
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7037653
+      value: -2.11
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.z
@@ -470,6 +474,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5360542853576715909, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5768598847128683751, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_Name
       value: AnchorPoint
@@ -480,11 +488,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.64803696
+      value: 2.42
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7037653
+      value: -2.12
       objectReference: {fileID: 0}
     - target: {fileID: 6674849695597823165, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
       propertyPath: m_LocalPosition.z
@@ -531,7 +539,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 1052123071}
   - {fileID: 1880543067998056097}
   - {fileID: 1232286998}
   - {fileID: 1774190408}
+  - {fileID: 1052123071}
