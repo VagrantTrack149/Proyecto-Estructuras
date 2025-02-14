@@ -66,30 +66,36 @@ public class ConstructionManager : MonoBehaviour
     }
 
     private void FinishCreatingBeam()
+{
+    // Buscar el punto de anclaje más cercano
+    AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
+
+    if (endAnchor != null)
     {
-        // Buscar un punto de anclaje cercano al ratón
-        AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
+        // Mover el punto de anclaje temporal a la posición del punto de anclaje más cercano
+        tempAnchor.transform.position = endAnchor.transform.position;
 
-        if (endAnchor != null)
-        {
-            // Conectar la viga al punto de anclaje existente
-            Beam beamScript = tempBeam.GetComponent<Beam>();
-            beamScript.endAnchor = endAnchor;
-        }
-        else
-        {
-            // Fijar el punto de anclaje temporal en su posición actual
-            tempAnchor.isFixed = true;
-        }
+        // Conectar la viga al punto de anclaje existente
+        Beam beamScript = tempBeam.GetComponent<Beam>();
+        beamScript.endAnchor = endAnchor;
 
-        startAnchor = null;
-        tempBeam = null;
-        tempAnchor = null;
+        // Destruir el punto de anclaje temporal
+        Destroy(tempAnchor.gameObject);
     }
+    else
+    {
+        // Fijar el punto de anclaje temporal en su posición actual
+        tempAnchor.isFixed = true;
+    }
+
+    startAnchor = null;
+    tempBeam = null;
+    tempAnchor = null;
+}
 
     private AnchorPoint FindClosestAnchor(Vector2 position)
     {
-        float minDistance = 1f; // Distancia máxima para conectar a un punto de anclaje existente
+        float minDistance = 1f; // Distancia máxima para conectar a un punto de anclaje
         AnchorPoint closestAnchor = null;
 
         foreach (AnchorPoint anchor in FindObjectsOfType<AnchorPoint>())
