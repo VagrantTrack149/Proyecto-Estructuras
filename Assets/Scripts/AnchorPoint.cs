@@ -2,24 +2,16 @@ using UnityEngine;
 
 public class AnchorPoint : MonoBehaviour
 {
-    private bool isDragging = false;
+    public bool isFixed = true; // Si es true, no se puede mover
 
     void OnMouseDown()
     {
-        isDragging = true;
-    }
-
-    void OnMouseUp()
-    {
-        isDragging = false;
-    }
-
-    void Update()
-    {
-        if (isDragging)
+        Debug.Log("Click en anchor Point");
+        if (!isFixed)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = mousePosition;
+            ConstructionManager.Instance.StartCreatingBeam(this);
+        }else{
+            ConstructionManager.Instance.StartCreatingBeam(this);
         }
     }
 }

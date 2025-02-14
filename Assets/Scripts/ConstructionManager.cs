@@ -2,62 +2,109 @@ using UnityEngine;
 
 public class ConstructionManager : MonoBehaviour
 {
-    public GameObject beamPrefab;
-    private AnchorPoint selectedAnchor;
+    public static ConstructionManager Instance; // Instancia para usarse en el punto de anclaje
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-    {
-        Debug.Log("Clic detectado.");
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+    public GameObject beamPrefab; // Prefab de la viga
+    public GameObject anchorPointPrefab; // Prefab del punto de anclaje
 
-        if (hit.collider != null)
+    private AnchorPoint startAnchor; // Punto de anclaje inicial
+    private GameObject tempBeam; // Viga temporal
+    private AnchorPoint tempAnchor; // Punto de anclaje temporal(Propio)
+
+    void Awake()
+    {
+        if (Instance == null)
         {
-            Debug.Log("Objeto detectado: " + hit.collider.name);
-            if (hit.collider.CompareTag("AnchorPoint"))
-            {
-                Debug.Log("Punto de anclaje detectado.");
-                AnchorPoint anchor = hit.collider.GetComponent<AnchorPoint>();
-
-                if (anchor == null)
-                {
-                    Debug.LogError("El objeto con tag 'AnchorPoint' no tiene el componente AnchorPoint.");
-                    return;
-                }
-
-                if (selectedAnchor == null)
-                {
-                    Debug.Log("Primer punto de anclaje seleccionado.");
-                    selectedAnchor = anchor;
-                }
-                else
-                {
-                    Debug.Log("Creando viga entre puntos de anclaje.");
-                    if (beamPrefab == null)
-                    {
-                        Debug.LogError("beamPrefab no está asignado en el ConstructionManager.");
-                        return;
-                    }
-
-                    CreateBeam(selectedAnchor, anchor);
-                    selectedAnchor = null;
-                }
-            }
+            Instance = this;
         }
         else
         {
-            Debug.Log("No se detectó ningún objeto con el clic.");
+            Destroy(gameObject);
         }
     }
+
+    void Update()
+    {
+        if (startAnchor != null)
+        {
+            UpdateTempBeam();
+        }
+
+        if (Input.GetMouseButtonUp(0)) // Al soltar el clic
+        {
+            if (startAnchor != null)
+            {
+                FinishCreatingBeam();
+            }
+        }
     }
 
-    void CreateBeam(AnchorPoint start, AnchorPoint end)
+    public void StartCreatingBeam(AnchorPoint anchor)
     {
-        GameObject beam = Instantiate(beamPrefab);
-        Beam beamScript = beam.GetComponent<Beam>();
-        beamScript.startAnchor = start;
-        beamScript.endAnchor = end;
+        startAnchor = anchor;
+
+        // Crear viga temporal
+        tempBeam = Instantiate(beamPrefab);
+        Beam beamScript = tempBeam.GetComponent<Beam>();
+        beamScript.startAnchor = startAnchor;
+
+        // Crear punto de anclaje temporal
+        tempAnchor = Instantiate(anchorPointPrefab).GetComponent<AnchorPoint>();
+        tempAnchor.isFixed = false; // El punto de anclaje es propio de la viga
+    }
+
+    private void UpdateTempBeam()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // Mover el punto de anclaje temporal al ratón
+        tempAnchor.transform.position = mousePosition;
+
+        // Actualizar la viga temporal
+        Beam beamScript = tempBeam.GetComponent<Beam>();
+        beamScript.endAnchor = tempAnchor;
+    }
+
+    private void FinishCreatingBeam()
+    {
+        // Buscar un punto de anclaje cercano al ratón
+        AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
+
+        if (endAnchor != null)
+        {
+            // Conectar la viga al punto de anclaje existente
+            Beam beamScript = tempBeam.GetComponent<Beam>();
+            beamScript.endAnchor = endAnchor;
+        }
+        else
+        {
+            // Fijar el punto de anclaje temporal en su posición actual
+            tempAnchor.isFixed = true;
+        }
+
+        startAnchor = null;
+        tempBeam = null;
+        tempAnchor = null;
+    }
+
+    private AnchorPoint FindClosestAnchor(Vector2 position)
+    {
+        float minDistance = 1f; // Distancia máxima para conectar a un punto de anclaje existente
+        AnchorPoint closestAnchor = null;
+
+        foreach (AnchorPoint anchor in FindObjectsOfType<AnchorPoint>())
+        {
+            if (anchor != startAnchor && anchor.isFixed)
+            {
+                float distance = Vector2.Distance(position, anchor.transform.position);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestAnchor = anchor;
+                }
+            }
+        }
+
+        return closestAnchor;
     }
 }

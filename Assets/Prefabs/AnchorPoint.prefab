@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 5360542853576715909}
   - component: {fileID: 4351134305801150660}
   - component: {fileID: 7065134162725009940}
+  - component: {fileID: 5799229782741539686}
   m_Layer: 0
   m_Name: AnchorPoint
   m_TagString: Untagged
@@ -238,3 +239,16 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &5799229782741539686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5768598847128683751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d01d09cb445f604b9bfa762c4dc5be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFixed: 1

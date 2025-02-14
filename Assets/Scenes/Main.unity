@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d01d09cb445f604b9bfa762c4dc5be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFixed: 1
 --- !u!1 &1052123068
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d01d09cb445f604b9bfa762c4dc5be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isFixed: 1
 --- !u!1 &1774190407
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,6 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beamPrefab: {fileID: 7822180421559157526, guid: 3963144196c9fa643a2234102002cedb, type: 3}
+  anchorPointPrefab: {fileID: 5768598847128683751, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
 --- !u!1001 &1880543067998056097
 PrefabInstance:
   m_ObjectHideFlags: 0
