@@ -75,7 +75,7 @@ public class ConstructionManager : MonoBehaviour
         // Mover el punto de anclaje temporal a la posición del punto de anclaje más cercano
         tempAnchor.transform.position = endAnchor.transform.position;
 
-        // Conectar la viga al punto de anclaje existente
+        // Conectar la viga al punto de anclaje
         Beam beamScript = tempBeam.GetComponent<Beam>();
         beamScript.endAnchor = endAnchor;
 
