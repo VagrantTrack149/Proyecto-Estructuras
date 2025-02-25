@@ -9,7 +9,7 @@ public class ConstructionManager : MonoBehaviour
 
     private AnchorPoint startAnchor; // Punto de anclaje inicial
     private GameObject tempBeam; // Viga temporal
-    private AnchorPoint tempAnchor; // Punto de anclaje temporal(Propio)
+    private AnchorPoint tempAnchor; // Punto de anclaje temporal (Propio)
 
     void Awake()
     {
@@ -66,36 +66,43 @@ public class ConstructionManager : MonoBehaviour
     }
 
     private void FinishCreatingBeam()
-{
-    // Buscar el punto de anclaje más cercano
-    AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
-
-    if (endAnchor != null)
     {
-        // Mover el punto de anclaje temporal a la posición del punto de anclaje más cercano
-        tempAnchor.transform.position = endAnchor.transform.position;
+        // Buscar el punto de anclaje más cercano
+        AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
 
-        // Conectar la viga al punto de anclaje
-        Beam beamScript = tempBeam.GetComponent<Beam>();
-        beamScript.endAnchor = endAnchor;
+        if (endAnchor != null)
+        {
+            // Mover el punto de anclaje temporal a la posición del punto de anclaje más cercano
+            tempAnchor.transform.position = endAnchor.transform.position;
 
-        // Destruir el punto de anclaje temporal
-        Destroy(tempAnchor.gameObject);
+            // Conectar la viga al punto de anclaje
+            Beam beamScript = tempBeam.GetComponent<Beam>();
+            beamScript.endAnchor = endAnchor;
+
+            // Destruir el punto de anclaje temporal
+            Destroy(tempAnchor.gameObject);
+        }
+        else
+        {
+            // Fijar el punto de anclaje temporal en su posición actual
+            tempAnchor.isFixed = true;
+        }
+
+        // Congela la escala de la viga
+        if (tempBeam != null)
+        {
+            Beam beamScript = tempBeam.GetComponent<Beam>();
+            beamScript.FreezeScale(); // Aquí se congela la escala
+        }
+
+        startAnchor = null;
+        tempBeam = null;
+        tempAnchor = null;
     }
-    else
-    {
-        // Fijar el punto de anclaje temporal en su posición actual
-        tempAnchor.isFixed = true;
-    }
-
-    startAnchor = null;
-    tempBeam = null;
-    tempAnchor = null;
-}
 
     private AnchorPoint FindClosestAnchor(Vector2 position)
     {
-        float minDistance = 1f; // Distancia máxima para conectar a un punto de anclaje
+        float minDistance = 1f; // Distancia máxima para conectar a un anchorPoint
         AnchorPoint closestAnchor = null;
 
         foreach (AnchorPoint anchor in FindObjectsOfType<AnchorPoint>())

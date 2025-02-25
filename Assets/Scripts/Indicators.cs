@@ -17,11 +17,13 @@ public class Indicators : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.color= Color.red;
+            //Color rojo al hacer click
         }
     }
     void OnMouseUp() {
         if (spriteRenderer != null){
             spriteRenderer.color= Color.yellow;
+            //Color amarillo cuando no pasa nada
         }
     }
 

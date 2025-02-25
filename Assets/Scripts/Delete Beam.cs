@@ -10,10 +10,11 @@ public class DeleteBeam : MonoBehaviour
                 Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 RaycastHit2D hit = Physics2D.Raycast(mousePosition,Vector2.zero);
                 Debug.Log(hit);
-                if (hit.collider == null){
-                    Debug.Log("Borrar a un paso");
+                if (hit.collider != null){
+                    Debug.Log("Borrar a un paso"); 
                     if (hit.collider.CompareTag("Beam")){
-                        Destroy(hit.collider.gameObject);  
+                        Destroy(hit.collider.gameObject);   //Borrar 
+                        //Falta borrar el anchorPoint
                     }
                 }
             }

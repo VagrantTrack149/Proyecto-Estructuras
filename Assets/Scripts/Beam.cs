@@ -5,6 +5,13 @@ public class Beam : MonoBehaviour
     public AnchorPoint startAnchor;
     public AnchorPoint endAnchor;
 
+    private bool isScaleFrozen = false; // Bandera para congelar la escala
+
+    public void FreezeScale()
+    {
+        isScaleFrozen = true; // Congela la escala 
+    }
+
     void Update()
     {
         if (startAnchor != null && endAnchor != null)
@@ -17,9 +24,12 @@ public class Beam : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle);
 
-            // Ajusta la escala de la viga para que coincida con la distancia entre los puntos
-            float distance = Vector2.Distance(startAnchor.transform.position, endAnchor.transform.position);
-            transform.localScale = new Vector3(distance, transform.localScale.y, transform.localScale.z);
+            // Solo actualiza la escala si no está congelada
+            if (!isScaleFrozen)
+            {
+                float distance = Vector2.Distance(startAnchor.transform.position, endAnchor.transform.position);
+                transform.localScale = new Vector3(distance, transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 }
