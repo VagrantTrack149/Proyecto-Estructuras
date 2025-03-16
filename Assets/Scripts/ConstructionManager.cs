@@ -1,5 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO; 
 public class ConstructionManager : MonoBehaviour
 {
     public static ConstructionManager Instance; // Instancia para usarse en el punto de anclaje
@@ -119,5 +121,73 @@ public class ConstructionManager : MonoBehaviour
         }
 
         return closestAnchor;
+    }
+
+    public void SaveStructureToJson(string filePath)
+    {
+        // Crear una instancia de StructureData
+        StructureData structureData = new StructureData();
+        structureData.beams = new List<BeamData>();
+
+        // Obtener todas las vigas en la escena
+        Beam[] beams = FindObjectsOfType<Beam>();
+
+        // Recopilar los datos de cada viga y asignar un ID
+        for (int i = 0; i < beams.Length; i++)
+        {
+            BeamData beamData = beams[i].GetBeamData();
+            beamData.id = i + 1; // Asignar un ID único (comenzando desde 1)
+            structureData.beams.Add(beamData);
+        }
+
+        // Convertir a JSON
+        string json = JsonUtility.ToJson(structureData, true); // El segundo parámetro (true) formatea el JSON para que sea legible
+
+        // Guardar el JSON en un archivo
+        File.WriteAllText(filePath, json);
+
+        Debug.Log("Estructura guardada en: " + filePath);
+    }
+
+    public void LoadStructureFromJson(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            // Leer el archivo JSON
+            string json = File.ReadAllText(filePath);
+
+            // Deserializar el JSON a StructureData
+            StructureData structureData = JsonUtility.FromJson<StructureData>(json);
+
+            // Recrear las vigas en la escena
+            foreach (BeamData beamData in structureData.beams)
+            {
+                // Crear puntos de anclaje
+                AnchorPoint startAnchor = CreateAnchorPoint(beamData.startAnchorPosition);
+                AnchorPoint endAnchor = CreateAnchorPoint(beamData.endAnchorPosition);
+
+                // Crear la viga
+                GameObject beamObject = Instantiate(beamPrefab);
+                Beam beam = beamObject.GetComponent<Beam>();
+                beam.startAnchor = startAnchor;
+                beam.endAnchor = endAnchor;
+
+                // Aplicar la escala y rotación
+                beamObject.transform.localScale = new Vector3(beamData.scaleX, beamObject.transform.localScale.y, beamObject.transform.localScale.z);
+                beamObject.transform.rotation = Quaternion.Euler(0, 0, beamData.angle);
+            }
+
+            Debug.Log("Estructura cargada desde: " + filePath);
+        }
+        else
+        {
+            Debug.LogError("El archivo no existe: " + filePath);
+        }
+    }
+
+    private AnchorPoint CreateAnchorPoint(Vector2 position)
+    {
+        GameObject anchorObject = Instantiate(anchorPointPrefab, position, Quaternion.identity);
+        return anchorObject.GetComponent<AnchorPoint>();
     }
 }
