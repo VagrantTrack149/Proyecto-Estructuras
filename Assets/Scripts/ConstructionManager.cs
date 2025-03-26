@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO; 
+using UnityEngine.SceneManagement;
 public class ConstructionManager : MonoBehaviour
 {
     public static ConstructionManager Instance; // Instancia para usarse en el punto de anclaje
@@ -189,5 +190,8 @@ public class ConstructionManager : MonoBehaviour
     {
         GameObject anchorObject = Instantiate(anchorPointPrefab, position, Quaternion.identity);
         return anchorObject.GetComponent<AnchorPoint>();
+    }
+    public void Salir(){
+        SceneManager.LoadScene(0);
     }
 }
