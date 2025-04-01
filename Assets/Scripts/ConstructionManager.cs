@@ -5,14 +5,13 @@ using System.IO;
 using UnityEngine.SceneManagement;
 public class ConstructionManager : MonoBehaviour
 {
-    public static ConstructionManager Instance; // Instancia para usarse en el punto de anclaje
-
-    public GameObject beamPrefab; // Prefab de la viga
-    public GameObject anchorPointPrefab; // Prefab del punto de anclaje
-
-    private AnchorPoint startAnchor; // Punto de anclaje inicial
-    private GameObject tempBeam; // Viga temporal
-    private AnchorPoint tempAnchor; // Punto de anclaje temporal (Propio)
+    public static ConstructionManager Instance;
+    public GameObject beamPrefab;
+    public GameObject anchorPointPrefab;
+    
+    private AnchorPoint startAnchor;
+    private GameObject tempBeam;
+    private AnchorPoint tempAnchor;
 
     void Awake()
     {
@@ -33,7 +32,7 @@ public class ConstructionManager : MonoBehaviour
             UpdateTempBeam();
         }
 
-        if (Input.GetMouseButtonUp(0)) // Al soltar el clic
+        if (Input.GetMouseButtonUp(0))
         {
             if (startAnchor != null)
             {
@@ -45,59 +44,35 @@ public class ConstructionManager : MonoBehaviour
     public void StartCreatingBeam(AnchorPoint anchor)
     {
         startAnchor = anchor;
-
-        // Crear viga temporal
         tempBeam = Instantiate(beamPrefab);
-        Beam beamScript = tempBeam.GetComponent<Beam>();
-        beamScript.startAnchor = startAnchor;
-
-        // Crear punto de anclaje temporal
+        tempBeam.GetComponent<Beam>().startAnchor = startAnchor;
         tempAnchor = Instantiate(anchorPointPrefab).GetComponent<AnchorPoint>();
-        tempAnchor.isFixed = false; // El punto de anclaje es propio de la viga
+        tempAnchor.isFixed = false;
     }
 
     private void UpdateTempBeam()
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        // Mover el punto de anclaje temporal al ratón
         tempAnchor.transform.position = mousePosition;
-
-        // Actualizar la viga temporal
-        Beam beamScript = tempBeam.GetComponent<Beam>();
-        beamScript.endAnchor = tempAnchor;
+        tempBeam.GetComponent<Beam>().endAnchor = tempAnchor;
     }
 
     private void FinishCreatingBeam()
     {
-        // Buscar el punto de anclaje más cercano
         AnchorPoint endAnchor = FindClosestAnchor(tempAnchor.transform.position);
-
+        
         if (endAnchor != null)
         {
-            // Mover el punto de anclaje temporal a la posición del punto de anclaje más cercano
             tempAnchor.transform.position = endAnchor.transform.position;
-
-            // Conectar la viga al punto de anclaje
-            Beam beamScript = tempBeam.GetComponent<Beam>();
-            beamScript.endAnchor = endAnchor;
-
-            // Destruir el punto de anclaje temporal
+            tempBeam.GetComponent<Beam>().endAnchor = endAnchor;
             Destroy(tempAnchor.gameObject);
         }
         else
         {
-            // Fijar el punto de anclaje temporal en su posición actual
             tempAnchor.isFixed = true;
         }
 
-        // Congela la escala de la viga
-        if (tempBeam != null)
-        {
-            Beam beamScript = tempBeam.GetComponent<Beam>();
-            beamScript.FreezeScale(); // Aquí se congela la escala
-        }
-
+        tempBeam.GetComponent<Beam>().FreezeScale();
         startAnchor = null;
         tempBeam = null;
         tempAnchor = null;
@@ -105,7 +80,7 @@ public class ConstructionManager : MonoBehaviour
 
     private AnchorPoint FindClosestAnchor(Vector2 position)
     {
-        float minDistance = 1f; // Distancia máxima para conectar a un anchorPoint
+        float minDistance = 1f;
         AnchorPoint closestAnchor = null;
 
         foreach (AnchorPoint anchor in FindObjectsOfType<AnchorPoint>())
@@ -126,27 +101,19 @@ public class ConstructionManager : MonoBehaviour
 
     public void SaveStructureToJson(string filePath)
     {
-        // Crear una instancia de StructureData
         StructureData structureData = new StructureData();
         structureData.beams = new List<BeamData>();
 
-        // Obtener todas las vigas en la escena
         Beam[] beams = FindObjectsOfType<Beam>();
-
-        // Recopilar los datos de cada viga y asignar un ID
         for (int i = 0; i < beams.Length; i++)
         {
             BeamData beamData = beams[i].GetBeamData();
-            beamData.id = i + 1; // Asignar un ID único (comenzando desde 1)
+            beamData.id = i + 1;
             structureData.beams.Add(beamData);
         }
 
-        // Convertir a JSON
-        string json = JsonUtility.ToJson(structureData, true); // El segundo parámetro (true) formatea el JSON para que sea legible
-
-        // Guardar el JSON en un archivo
+        string json = JsonUtility.ToJson(structureData, true);
         File.WriteAllText(filePath, json);
-
         Debug.Log("Estructura guardada en: " + filePath);
     }
 
@@ -154,26 +121,34 @@ public class ConstructionManager : MonoBehaviour
     {
         if (File.Exists(filePath))
         {
-            // Leer el archivo JSON
             string json = File.ReadAllText(filePath);
-
-            // Deserializar el JSON a StructureData
             StructureData structureData = JsonUtility.FromJson<StructureData>(json);
 
-            // Recrear las vigas en la escena
+            // Limpiar estructura existente
+            foreach (Beam beam in FindObjectsOfType<Beam>())
+            {
+                Destroy(beam.gameObject);
+            }
+            foreach (AnchorPoint anchor in FindObjectsOfType<AnchorPoint>())
+            {
+                if (!anchor.isFixed) Destroy(anchor.gameObject);
+            }
+
+            // Crear nueva estructura
+            Dictionary<int, AnchorPoint> anchorDict = new Dictionary<int, AnchorPoint>();
+            
             foreach (BeamData beamData in structureData.beams)
             {
-                // Crear puntos de anclaje
-                AnchorPoint startAnchor = CreateAnchorPoint(beamData.startAnchorPosition);
-                AnchorPoint endAnchor = CreateAnchorPoint(beamData.endAnchorPosition);
+                AnchorPoint startAnchor = CreateOrGetAnchor(beamData.startAnchorPosition, anchorDict);
+                AnchorPoint endAnchor = CreateOrGetAnchor(beamData.endAnchorPosition, anchorDict);
 
-                // Crear la viga
                 GameObject beamObject = Instantiate(beamPrefab);
                 Beam beam = beamObject.GetComponent<Beam>();
                 beam.startAnchor = startAnchor;
                 beam.endAnchor = endAnchor;
+                beam.weight = beamData.weight;
+                beam.resistivity = beamData.resistivity;
 
-                // Aplicar la escala y rotación
                 beamObject.transform.localScale = new Vector3(beamData.scaleX, beamObject.transform.localScale.y, beamObject.transform.localScale.z);
                 beamObject.transform.rotation = Quaternion.Euler(0, 0, beamData.angle);
             }
@@ -186,12 +161,24 @@ public class ConstructionManager : MonoBehaviour
         }
     }
 
-    private AnchorPoint CreateAnchorPoint(Vector2 position)
+    private AnchorPoint CreateOrGetAnchor(Vector2 position, Dictionary<int, AnchorPoint> anchorDict)
     {
+        foreach (KeyValuePair<int, AnchorPoint> entry in anchorDict)
+        {
+            if (Vector2.Distance(entry.Value.transform.position, position) < 0.1f)
+            {
+                return entry.Value;
+            }
+        }
+
         GameObject anchorObject = Instantiate(anchorPointPrefab, position, Quaternion.identity);
-        return anchorObject.GetComponent<AnchorPoint>();
+        AnchorPoint newAnchor = anchorObject.GetComponent<AnchorPoint>();
+        anchorDict.Add(anchorDict.Count + 1, newAnchor);
+        return newAnchor;
     }
-    public void Salir(){
+
+    public void Salir()
+    {
         SceneManager.LoadScene(0);
     }
 }

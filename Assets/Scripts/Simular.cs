@@ -4,44 +4,69 @@ using UnityEngine;
 
 public class Simular : MonoBehaviour
 {
-    public void reproducir(){
-        // 1. Leer los GameObjects con la etiqueta "AnchorPoint"
-        GameObject[] anchorPoints = GameObject.FindGameObjectsWithTag("AnchorPoint");
-
-        // 2. Leer los GameObjects con la etiqueta "Beam"
-        GameObject[] beams = GameObject.FindGameObjectsWithTag("Beam");
-
-        // 3. Quitarles los componentes Rigidbody2D
-        QuitarRigidbody2D(anchorPoints);
-        QuitarRigidbody2D(beams);
-
-        // 4. Crear un nuevo objeto llamado "Estructuras"
-        GameObject estructuras = new GameObject("Estructuras");
-
-        // 5. Colocar como hijos a los GameObjects de AnchorPoint y Beam
-        ColocarComoHijos(estructuras, anchorPoints);
-        ColocarComoHijos(estructuras, beams);
-
-        // 6. Colocarle a "Estructuras" el componente Rigidbody2D
-        estructuras.AddComponent<Rigidbody2D>();
-    }
-void QuitarRigidbody2D(GameObject[] objetos)
+    public float simulationSpeed = 1.0f;
+    
+    public void reproducir()
     {
-        foreach (GameObject obj in objetos)
+        StartCoroutine(RunStructuralAnalysis());
+    }
+
+    IEnumerator RunStructuralAnalysis()
+    {
+        List<Beam> allBeams = new List<Beam>(FindObjectsOfType<Beam>());
+        
+        // Paso 1: Establecer conexiones y apoyos
+        foreach (Beam beam in allBeams)
         {
-            Rigidbody2D rb = obj.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            beam.connectedBeams = FindConnectedBeams(beam, allBeams);
+            beam.CheckSupport(allBeams);
+        }
+
+        // Paso 2: Calcular tensiones y fallas
+        bool structureChanged;
+        do
+        {
+            structureChanged = false;
+            
+            foreach (Beam beam in allBeams.ToArray())
             {
-                Destroy(rb);
+                if (beam.isBroken) continue;
+                
+                beam.CalculateRealStress();
+                beam.CheckFailure();
+                
+                if (beam.isBroken)
+                {
+                    allBeams.Remove(beam);
+                    structureChanged = true;
+                    yield return new WaitForSeconds(1.0f/simulationSpeed);
+                }
+            }
+            
+        } while (structureChanged);
+    }
+
+    private List<Beam> FindConnectedBeams(Beam targetBeam, List<Beam> allBeams)
+    {
+        List<Beam> connections = new List<Beam>();
+        
+        foreach (Beam beam in allBeams)
+        {
+            if (beam == targetBeam || beam.isBroken) continue;
+            
+            bool sharesStartAnchor = beam.startAnchor == targetBeam.startAnchor || 
+                                   beam.startAnchor == targetBeam.endAnchor;
+            
+            bool sharesEndAnchor = beam.endAnchor == targetBeam.startAnchor || 
+                                 beam.endAnchor == targetBeam.endAnchor;
+            
+            if (sharesStartAnchor || sharesEndAnchor)
+            {
+                connections.Add(beam);
             }
         }
-    }
-
-    void ColocarComoHijos(GameObject padre, GameObject[] hijos)
-    {
-        foreach (GameObject hijo in hijos)
-        {
-            hijo.transform.parent = padre.transform;
-        }
+        
+        return connections;
     }
 }
+

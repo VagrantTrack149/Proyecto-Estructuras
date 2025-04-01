@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ApplyForce : MonoBehaviour
 {
-    public float forceMagnitude = 10f; // Magnitud de la fuerza aplicada
+    public float forceMagnitude = 100f; // Magnitud de la fuerza aplicada
 
     void Update()
     {
