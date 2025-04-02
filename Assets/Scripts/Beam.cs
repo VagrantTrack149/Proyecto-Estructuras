@@ -98,10 +98,10 @@ public class Beam : MonoBehaviour
 
     private void DestroyBeam()
     {
-        if (startAnchor != null && !startAnchor.isFixed)
+        if (startAnchor != null )
             Destroy(startAnchor.gameObject);
         
-        if (endAnchor != null && !endAnchor.isFixed)
+        if (endAnchor != null )
             Destroy(endAnchor.gameObject);
         
         Destroy(gameObject);

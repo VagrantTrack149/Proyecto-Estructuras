@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weight: 1
-  resistivity: 200
+  resistivity: 75
   startAnchor: {fileID: 0}
   endAnchor: {fileID: 0}
   currentForce: 0
