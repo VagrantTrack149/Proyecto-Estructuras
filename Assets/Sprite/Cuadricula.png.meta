@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7bf09b67c6632e64ab76143db6b59cf5
+guid: ac09fa13fcfc95b41b102aa26ddf7076
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7688803692292676192
-    second: pngegg (2)_0
+      213: -3674205484279697566
+    second: pngegg (3)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pngegg (2)_0
+      name: pngegg (3)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2000
-        height: 2000
+        width: 422
+        height: 750
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 06a11da983e14ba60800000000000000
-      internalID: 7688803692292676192
+      spriteID: 26f67bd2499920dc0800000000000000
+      internalID: -3674205484279697566
       vertices: []
       indices: 
       edges: []
@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      pngegg (3)_0: -3674205484279697566
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
