@@ -2054,6 +2054,7 @@ GameObject:
   - component: {fileID: 1774190409}
   - component: {fileID: 1774190410}
   - component: {fileID: 1774190411}
+  - component: {fileID: 1774190412}
   m_Layer: 0
   m_Name: ConstructionManager
   m_TagString: Untagged
@@ -2116,9 +2117,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a85a33c9d67d74298a45797e5b6713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anchorPoint: []
   constructionManager: {fileID: 1774190409}
   filePath: structure.json
   Limpia: limpio.json
+--- !u!114 &1774190412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774190407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be22eb0f7c13a44695fd82245831f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchorPoint: {fileID: 5768598847128683751, guid: 1bfbae9feeef6f3448b4d9ab44b8e7ce, type: 3}
 --- !u!1 &2011334772
 GameObject:
   m_ObjectHideFlags: 0
