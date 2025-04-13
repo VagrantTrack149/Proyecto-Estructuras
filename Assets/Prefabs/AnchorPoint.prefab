@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7065134162725009940}
   - component: {fileID: 5799229782741539686}
   - component: {fileID: 3164861429550845248}
+  - component: {fileID: 4278966233118744134}
   m_Layer: 0
   m_Name: AnchorPoint
   m_TagString: AnchorPoint
@@ -177,5 +178,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c586da1de4e6f84285489f9526045d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4278966233118744134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5768598847128683751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cff56aff1b56d14da9d46b17bcbefcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

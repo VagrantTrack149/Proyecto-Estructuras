@@ -16,5 +16,6 @@ public class SaveButton : MonoBehaviour
     }
     public void Limpiar(){
         constructionManager.LoadStructureFromJson(Limpia);
+        
     }
 }
