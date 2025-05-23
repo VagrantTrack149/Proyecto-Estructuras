@@ -4,14 +4,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
-    public void Start(){
-        Cursor.lockState = CursorLockMode.None; 
+    public void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
-    public void Play(){
+    public void Play()
+    {
         SceneManager.LoadScene(1);
-   }
-    public void Salir(){
+    }
+    public void Salir()
+    {
         Application.Quit();
+    }
+    public void Creditos()
+    {
+        SceneManager.LoadScene(2);
    }
 }
