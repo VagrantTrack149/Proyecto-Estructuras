@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Simular : MonoBehaviour
 {
-    public float simulationSpeed = 1.0f;
+    public float simulationSpeed = 100.0f;
     public ConstructionManager contructionManager;
     public void reproducir()
     {
         contructionManager.SaveStructureToJson("structure.json");
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 300; i++)
         {
-            if (i==99)
+            if (i==299)
             StartCoroutine(RunStructuralAnalysis());
         }
         

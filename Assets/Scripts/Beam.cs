@@ -67,12 +67,15 @@ public class Beam : MonoBehaviour
         
         visited.Add(this);
         float totalStress = weight * 9.81f;
-        
+
         foreach (Beam connectedBeam in connectedBeams)
         {
             if (!connectedBeam.isBroken && !connectedBeam.isSupported)
             {
                 totalStress += connectedBeam.CalculateRealStress(visited);
+            }
+            if (connectedBeam.isSupported){
+                totalStress -= connectedBeam.CalculateRealStress(visited)/2;
             }
         }
         

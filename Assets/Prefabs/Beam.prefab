@@ -183,6 +183,7 @@ MonoBehaviour:
   isBroken: 0
   isSupported: 0
   connectedBeams: []
+  simul: 0
 --- !u!114 &9137119550063206416
 MonoBehaviour:
   m_ObjectHideFlags: 0
