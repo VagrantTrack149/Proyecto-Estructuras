@@ -3038,7 +3038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933caa629869d30489da435e4c2f7e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  simulationSpeed: 1
+  simulationSpeed: 100
   contructionManager: {fileID: 1774190409}
 --- !u!114 &1774190411
 MonoBehaviour:

@@ -12,7 +12,6 @@ public class ConstructionManager : MonoBehaviour
     private AnchorPoint startAnchor;
     private GameObject tempBeam;
     private AnchorPoint tempAnchor;
-
     void Awake()
     {
         if (Instance == null)
