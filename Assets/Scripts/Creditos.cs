@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Creditos : MonoBehaviour
 {
-    public String url_1="https://github.com/VagrantTrack149";
-    public String url_2= "";
+    private String url_1="https://github.com/VagrantTrack149";
+    private String url_2= "https://github.com/brDaniel";
     // Start is called before the first frame update
     public void Salir()
     {
@@ -18,7 +18,7 @@ public class Creditos : MonoBehaviour
         Application.OpenURL(url_1);
     }
 
-        public void cargar_pagina1()
+    public void cargar_pagina1()
     {
         Application.OpenURL(url_2);
     }
